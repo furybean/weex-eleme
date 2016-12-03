@@ -1,8 +1,10 @@
 <template>
   <div class="star">
-    <image src="{{Images.grayStar}}" style="height: 16; width: 100;"></image>
-    <div class="star-wrapper" style="width: {{value / 5 * 100}}px;">
-      <image src="{{Images.orangeStar}}" style="height: 16; width: 100;"></image>
+    <div style="margin-top: 3px;">
+      <image src="{{Images.grayStar}}" style="height: 16; width: 100;"></image>
+      <div class="star-wrapper" style="width: {{value / 5 * 100}}px;">
+        <image src="{{Images.orangeStar}}" style="height: 16; width: 100;"></image>
+      </div>
     </div>
     <text if="showValue" class="star-value">{{value}}</text>
   </div>
