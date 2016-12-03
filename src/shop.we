@@ -1,0 +1,20 @@
+<template>
+  <div>
+    <text>{{ msg }} </text>
+  </div>
+</template>
+
+<style>
+</style>
+
+<script>
+  module.exports = {
+    data: {
+      msg: 'it works'
+    },
+    methods: {
+    },
+    ready() {
+    }
+  };
+</script>
