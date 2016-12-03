@@ -1,0 +1,86 @@
+<template>
+  <slider class="slider">
+    <div class="slider-page" repeat="{{pages}}">
+      <div repeat="{{ value }}" style="width: 160; height: 160">
+        <image src="//fuss10.elemecdn.com{{image_url}}" style="width: 80; height: 80;margin-left: 40;" />
+        <text class="entry-text">{{title}}</text>
+      </div>
+    </div>
+    <indicator class="indicator"></indicator>
+  </slider>
+</template>
+
+<style>
+  .slider {
+    height: 380;
+  }
+
+  .slider-page {
+    background-color: #fff;
+    width: 750;
+    padding: 20;
+    flex-direction: row; 
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #eee;
+  }
+
+  .entry-text {
+    text-align: center;
+    margin-top: 30;
+    margin-bottom: 30;
+    font-size: 24;
+    color: #666;
+  }
+
+  .indicator {
+    position: absolute;
+    width: 690;
+    height: 420;
+    top: 140;
+    left: 40;
+    itemSize: 10;
+    itemColor: #dddddd;
+    itemSelectedColor: rgba(0, 0, 0, 0.5);
+  }
+</style>
+
+<script>
+  const stream = require('@weex-module/stream');
+  const ENTRY_URL = 'https://mainsite-restapi.ele.me/v2/index_entry?geohash=wtw3dq8dus58&group_type=1&flags[]=F';
+
+  module.exports = {
+    data: {
+      entries: [],
+      pages: []
+    },
+    methods: {
+    },
+    created() {
+      stream.fetch({
+        url: ENTRY_URL,
+        type: 'json'
+      }, (ret) => {
+        if (!ret.ok) {
+          console.log('request failed');
+        } else {
+          const entries = this.entries = ret.data;
+          const pageCount = Math.ceil(entries.length / 8);
+          const pages = this.pages;
+
+          for (let i = 0; i < pageCount; i++) {
+            pages.push({
+              value: entries.slice(i * 8, Math.min((i + 1) * 8, entries.length))
+            });
+          }
+        }
+      }, function(response) {
+        // console.log('get in progress:' + response.length);
+      });
+    },
+    ready() {
+    }
+  };
+</script>

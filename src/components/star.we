@@ -1,0 +1,42 @@
+<template>
+  <div class="star">
+    <image src="{{Images.grayStar}}" style="height: 16; width: 100;"></image>
+    <div class="star-wrapper" style="width: {{value / 5 * 100}}px;">
+      <image src="{{Images.orangeStar}}" style="height: 16; width: 100;"></image>
+    </div>
+    <text if="showValue" class="star-value">{{value}}</text>
+  </div>
+</template>
+
+<style>
+  .star {
+    position: relative;
+    flex-direction: row;
+  }
+
+  .star-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+  }
+
+  .star-value {
+    color: #ff6000;
+    font-size: 20;
+    margin-left: 10;
+    margin-right: 10;
+  }
+</style>
+
+<script>
+  import Images from '../image';
+
+  module.exports = {
+    data: {
+      value: 5,
+      showValue: true,
+      Images
+    }
+  };
+</script>

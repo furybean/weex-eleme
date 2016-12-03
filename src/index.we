@@ -1,16 +1,47 @@
 <template>
-  <div>
-    <text>{{ msg }} </text>
-  </div>
+  <scroller style="background-color: #f4f4f4;">
+    <entry-slider></entry-slider>
+    <div class="list-header">
+      <image src="{{ Images.shop }}" style="width: 24; height: 24;"></image>
+      <text class="list-header-text">附近商家</text>
+    </div>
+    <shop-list></shop-list>
+  </scroller>
 </template>
 
 <style>
+  .list-header {
+    flex-direction: row;
+    padding: 20;
+    margin-top: 32;
+    background-color: #fff;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #eee;
+  }
+
+  .list-header-text {
+    color: #666;
+    font-size: 24;
+    margin-left: 8;
+  }
+
+  .loading-view {
+    height: 80px;
+    width: 750px;
+    justify-content: center;
+    align-items: center;
+  }
 </style>
 
 <script>
+  require('./components/entry-slider.we');
+  require('./components/shop-list.we');
+  import Images from './image';
+
   module.exports = {
     data: {
-      msg: 'it works'
+      Images
     },
     methods: {
     },

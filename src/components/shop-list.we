@@ -1,0 +1,120 @@
+<template>
+  <div repeat="{{rsts}}" class="rst">
+    <hash-image class="rst-image" hash="{{image_path}}"></hash-image>
+    <div class="rst-content">
+      <div class="rst-row">
+        <text if="{{is_premium}}" class="rst-premium">品牌</text>
+        <text class="rst-name">{{name}}</text>
+      </div>
+      <div class="rst-row">
+        <star value="{{rating}}"></star>
+        <text class="rst-small-text">月售{{recent_order_num}}单</text>
+      </div>
+      <div class="rst-row" style="margin-bottom: 0;">
+        <div style="flex-direction: row; flex: 1;">
+          <text class="rst-small-text">￥{{float_minimum_order_amount}}起送</text>
+          <text class="rst-separator">/</text>
+          <text class="rst-small-text">配送费{{float_delivery_fee}}元</text>
+        </div>
+        <div style="flex-direction: row;">
+          <text class="rst-small-text">{{distance}}米</text>
+          <text class="rst-separator">/</text>
+          <text class="rst-time">{{order_lead_time}}分钟</text>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style>
+  .rst {
+    background-color: #fff;
+    flex-direction: row;
+    padding: 24;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #eee;
+  }
+
+  .rst-image {
+    width: 120; 
+    height: 120;
+  }
+
+  .rst-content {
+    flex: 1;
+    margin-left: 16;
+  }
+
+  .rst-row {
+    flex-direction: row;
+    margin-bottom: 16;
+  }
+
+  .rst-premium {
+    font-weight: bold;
+    padding: 4;
+    border-radius: 4;
+    margin-right: 16;
+    font-size: 24;
+    background-color: #ffd930;
+    color: #52250a;
+  }
+
+  .rst-separator {
+    font-size: 20;
+    color: #ddd;
+    margin-left: 6;
+    margin-right: 6;
+  }
+
+  .rst-name {
+    font-size: 30;
+    font-weight: bold;
+  }
+
+  .rst-small-text {
+    font-size: 20;
+    color: #666;
+  }
+
+  .rst-time {
+    font-size: 20;
+    color: #2395ff;
+  }
+</style>
+
+<script>
+  require('./hash-image.we');
+  require('./star.we');
+  const stream = require('@weex-module/stream');
+  const RST_URL = 'https://mainsite-restapi.ele.me/shopping/restaurants?latitude=31.237371&longitude=121.388824&extras[]=activities&offset=0&limit=20';
+
+  module.exports = {
+    data: {
+      rsts: []
+    },
+    methods: {
+    },
+    created() {
+      stream.fetch({
+        url: RST_URL,
+        type: 'json'
+      }, (ret) => {
+        if (!ret.ok) {
+          console.log('request failed');
+        } else {
+          const rsts = ret.data;
+          rsts.forEach((rst) => {
+
+          });
+          this.rsts = rsts;
+        }
+      }, function(response) {
+        // console.log('get in progress:' + response.length);
+      });
+    },
+    ready() {
+    }
+  };
+</script>

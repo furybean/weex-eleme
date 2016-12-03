@@ -28,7 +28,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.conf.js",
-    "dev": "webpack --config webpack.conf.js && serve -p 12580",
+    "dev": "webpack --watch --config webpack.conf.js & serve -p 12580",
     "serve": "serve -p 12580"
   },
   "repository": {

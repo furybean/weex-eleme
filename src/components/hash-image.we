@@ -1,0 +1,22 @@
+<template>
+  <image src="{{url}}"></image>
+</template>
+
+<style>
+</style>
+
+<script>
+  import { getImageURL } from '../util';
+
+  module.exports = {
+    data: {
+      url: null,
+      hash: null
+    },
+    created() {
+      if (this.hash) {
+        this.url = getImageURL(this.hash);
+      }
+    }
+  };
+</script>
