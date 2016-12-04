@@ -1,0 +1,31 @@
+<template>
+  <div style="width: 750;">
+    <scroller>
+      <div>
+        <div repeat="{{rst.activities || []}}">
+          <div style="flex-direction: row;">
+            <text style="color: #fff; border-radius: 4; background-color: {{'#' + icon_color}}">{{icon_name}}</text>
+            <text style="flex: 1;">{{description}}</text>
+          </div>
+        </div>
+      </div>
+      <div>
+        <text>商家信息</text>
+        <text>{{rst.description}}</text>
+        <text>地址：{{rst.address}}</text>
+        <text>营业时间：{{ rst.opening_hours && rst.opening_hours[0] }}</text>
+      </div>
+    </scroller>
+  </div>
+</template>
+
+<style>
+</style>
+
+<script>
+  module.exports = {
+    data: {
+      rst: {}
+    }
+  };
+</script>

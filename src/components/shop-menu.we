@@ -1,0 +1,139 @@
+<template>
+  <div class="shop-menu">
+    <scroller class="shop-categories">
+      <div repeat={{menus}}
+          id="shop-menu-tab-{{id}}" 
+          class="category-tab {{ activeCategory === id ? 'category-tab-active' : '' }}"
+          onclick="handleCategoryClick($event, id)">
+        <text class="category-text">{{ name }}</text>
+      </div>
+    </scroller>
+    <list class="shop-menus">
+      <cell repeat={{menus}}>
+        <div id="shop-food-header-{{id}}" class="food-header">
+          <text>{{ name }}</text>
+        </div>
+        <div class="food" repeat={{foods}} style="flex-direction: row;">
+          <hash-image class="food-image" hash="{{ image_path }}"></hash-image>
+          <div style="flex: 1;">
+            <text class="food-name">{{ name }}</text>
+            <text class="food-desc" if="{{ description }}">{{ description }}</text>
+            <div style="flex-direction: row;">
+              <text class="food-month_sales">月售{{ month_sales }}份</text>
+              <text class="food-satisfy_rate">好评率{{ satisfy_rate }}%</text>
+            </div>
+            <div onclick1="addToCart(food_id)"><text>+</text></div>
+          </div>
+        </div>
+      </cell>
+    </list>
+  </div>
+</template>
+
+<style>
+  .shop-menu {
+    width: 750;
+    height: 100%;
+    flex-direction: row;
+  }
+
+  .shop-categories {
+    background-color: #f8f8f8;
+    flex: 3;
+  }
+
+  .shop-menus {
+    flex: 9;
+  }
+
+  .category-tab {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    border-bottom-width: 2;
+    border-bottom-style: solid;
+    border-bottom-color: #ededed;
+    background-color: transparent;
+  }
+
+  .category-text {
+    font-size: 28;
+    overflow: hidden;
+    color: #666;
+  }
+
+  .category-tab-active {
+    border-left-width: 6px;
+    border-left-style: solid;
+    border-left-color: #4b8fe1;
+    background-color: #fff;
+  }
+
+  .food-header {
+    background-color: #f1f1f1;
+    padding: 16px;
+  }
+
+  .food {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .food-desc {
+    color: #999;
+    font-size: 16;
+    margin-bottom: 16;
+  }
+
+  .food-name {
+    font-size: 30;
+    margin-bottom: 16;
+  }
+
+  .food-image {
+    width: 120;
+    height: 120;
+    margin-right: 20;
+  }
+
+  .food-month_sales {
+    font-size: 20;
+    color: #666;
+    margin-right: 10;
+  }
+
+  .food-satisfy_rate {
+    font-size: 20;
+    color: #666;
+  }
+</style>
+
+<script>
+  import { getImageURL } from '../util';
+  const dom = require('@weex-module/dom');
+  require('./hash-image.we');
+
+  module.exports = {
+    data: {
+      menus: [],
+      activeCategory: null
+    },
+    created() {
+    },
+    methods: {
+      handleCategoryClick(event, id) {
+        const header = this.$el('shop-food-header-' + id);
+        if (header) {
+          dom.scrollToElement(header, { offset: 0 });
+        }
+        this.activeCategory = id;
+      }
+    },
+    computed: {
+      url() {
+        return this.hash ? getImageURL(this.hash) : '';
+      }
+    }
+  };
+</script>

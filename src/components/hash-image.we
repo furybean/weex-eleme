@@ -10,12 +10,11 @@
 
   module.exports = {
     data: {
-      url: null,
       hash: null
     },
-    created() {
-      if (this.hash) {
-        this.url = getImageURL(this.hash);
+    computed: {
+      url() {
+        return this.hash ? getImageURL(this.hash) : '';
       }
     }
   };
