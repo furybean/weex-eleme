@@ -1,0 +1,57 @@
+<template>
+  <div class="nav-bar" style="height: {{height}}px; paddingTop: {{paddingTop}}px">
+    <text class="nav-bar-title">{{title}}</text>
+    <text class="nav-bar-back" onclick="goBack">Back</text>
+  </div>
+</template>
+
+<style>
+  .nav-bar {
+    position: relative;
+    width: 750;
+    height: 120;
+    padding-top: 32;
+    flex-direction: row;
+    background-color: #3190e8;
+  }
+
+  .nav-bar-back {
+    position: absolute;
+    left: 32;
+    bottom: 22;
+    color: #fff;
+    font-size: 34;
+  }
+
+  .nav-bar-title {
+    width: 750;
+    color: #fff;
+    text-align: center;
+    font-size: 34;
+    padding-top: 30;
+  }
+</style>
+
+<script>
+  const navigator = require('@weex-module/navigator');
+
+  module.exports = {
+    data: {
+      title: '',
+      showBack: false,
+      height: 120,
+      paddingTop: 32
+    },
+    created() {
+      if (typeof window !== 'undefined') {
+        this.height = 88;
+        this.paddingTop = 0;
+      }
+    },
+    methods: {
+      goBack() {
+        navigator.pop({}, function() {});
+      }
+    }
+  };
+</script>

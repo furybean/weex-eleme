@@ -1,20 +1,33 @@
 <template>
-  <div>
-    <text>{{ msg }} </text>
+  <div class="page">
+    <nav-bar title="餐厅页面"></nav-bar>
+    <div class="page-content">
+      <text>...</text>
+    </div>
   </div>
 </template>
 
 <style>
+  .page {
+    flex-direction: column;
+    height: 750;
+  }
+
+  .page-content {
+    flex: 1;
+  }
 </style>
 
 <script>
+  require('weex-components');
+  require('./components/nav-bar.we');
+
   module.exports = {
     data: {
-      msg: 'it works'
     },
     methods: {
     },
-    ready() {
+    created() {
     }
   };
 </script>
