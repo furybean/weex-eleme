@@ -21,6 +21,21 @@
       <shop-menu menus="{{menus}}" style="width: {{ activeSliderTab === 0 ? 750 : 0 }}"></shop-menu>
       <shop-info rst="{{rst}}" style="width: {{ activeSliderTab === 1 ? 750 : 0 }}"></shop-info>
     </div>
+    <div class="cart {{ showCart ? '' : 'is-hidden' }}">
+      <div class="cart-mask" onclick="toggleCart">
+      </div>
+      <div id="cart-content" class="cart-content" style="height: {{ cartHeight + 'px' }}; bottom: {{ -1 * cartHeight + 'px' }}">
+        <scroller>
+          <div repeat="{{ cart.items }}" class="cart-item">
+            <text>{{ spec.name }}</text>
+            <text>{{ count }}</text>
+          </div>
+        </scroller>
+      </div>
+    </div>
+    <div class="cart-wrapper" onclick="toggleCart">
+      <text>购物车{{cart.total}}</text>
+    </div>
   </div>
 </template>
 
@@ -96,6 +111,42 @@
     border-bottom-style: solid;
     border-bottom-color: #3190e8;
   }
+
+  .cart-wrapper {
+    position: relative;
+    background-color: #eee;
+    height: 80;
+  }
+
+  .cart {
+    position: absolute;
+    top: 0;
+    bottom: 80;
+    width: 750;
+  }
+
+  .is-hidden {
+    visibility: hidden;
+  }
+
+  .cart-mask {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 750;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .cart-content {
+    position: absolute;
+    width: 750;
+    background-color: #fff;
+  }
+
+  .cart-item {
+    height: 40;
+    flex-direction: row;
+  }
 </style>
 
 <script>
@@ -120,6 +171,8 @@
     });
   };
 
+  import Cart from './cart';
+
   module.exports = {
     data: {
       inBrowser: false,
@@ -127,7 +180,19 @@
       activeSliderTab: 0,
       menus: [],
       specs: [],
-      specsMap: []
+      specsMap: {},
+      foodsMap: {},
+      showCart: false,
+      cart: Cart
+    },
+    computed: {
+      carts() {
+        return this.cart.items;
+      },
+      cartHeight() {
+        const result = this.cart.items.length * 40;
+        return Math.min(600, result);
+      }
     },
     methods: {
       handleSliderChange(event) {
@@ -137,6 +202,25 @@
       handleSliderTabClick(index) {
         this.activeSliderTab = index;
         doAnimate(index, this.$el('slider-tab-indicator'));
+      },
+      toggleCart() {
+        const visible = !this.showCart;
+        if (this.carts.length === 0) return;
+        if (visible) {
+          this.showCart = visible;
+        }
+        animation.transition(this.$el('cart-content'), {
+          styles: {
+            transform: visible ? `translateY(${-1 * this.cartHeight}px)` : 'translateY(0)'
+          },
+          duration: 200,
+          timingFunction: 'ease',
+          delay: 0
+        }, () => {
+          if (!visible) {
+            this.showCart = visible;
+          }
+        });
       }
     },
     created() {
@@ -170,19 +254,26 @@
           const menus = ret.data;
           let specs = [];
           const specsMap = {};
-          menus.forEach((category) => {
-            category.foods.forEach((food) => {
+          const foodsMap = {};
+          menus.forEach((category, menuIndex) => {
+            category.foods.forEach((food, foodIndex) => {
+              food.count = 0;
+              const foodId = food.$id = 'food-' + menuIndex + '-' + foodIndex;
               const specfoods = food.specfoods;
               if (specfoods.length === 1) {
-                food.food_id = specfoods[0].food_id;
+                food.spec_id = specfoods[0].food_id;
               }
               specfoods.forEach((spec) => {
                 specsMap[spec.food_id] = spec;
+                spec.count = 0;
+                spec.parent = foodId;
               });
               specs = specs.concat(specfoods);
+              foodsMap[foodId] = food;
             });
           });
-          this.specsMap = specsMap;
+          Cart.specsMap = this.specsMap = specsMap;
+          Cart.foodsMap = this.foodsMap = foodsMap;
           this.specs = specs;
           this.menus = menus;
         }

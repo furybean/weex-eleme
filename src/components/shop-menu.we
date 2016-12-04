@@ -22,7 +22,7 @@
               <text class="food-month_sales">月售{{ month_sales }}份</text>
               <text class="food-satisfy_rate">好评率{{ satisfy_rate }}%</text>
             </div>
-            <div onclick1="addToCart(food_id)"><text>+</text></div>
+            <div onclick="addToCart(spec_id)"><text>{{ count }}</text></div>
           </div>
         </div>
       </cell>
@@ -111,6 +111,7 @@
 
 <script>
   import { getImageURL } from '../util';
+  import Cart from '../cart';
   const dom = require('@weex-module/dom');
   require('./hash-image.we');
 
@@ -122,6 +123,9 @@
     created() {
     },
     methods: {
+      addToCart(spceId) {
+        Cart.add(spceId);
+      },
       handleCategoryClick(event, id) {
         const header = this.$el('shop-food-header-' + id);
         if (header) {
