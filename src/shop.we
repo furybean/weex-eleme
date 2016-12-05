@@ -25,10 +25,14 @@
       <div class="cart-mask" onclick="toggleCart">
       </div>
       <div id="cart-content" class="cart-content" style="height: {{ cartHeight + 'px' }}; bottom: {{ -1 * cartHeight + 'px' }}">
+        <div class="cart-header">
+          <text class="cart-title">购物车</text>
+          <text class="cart-clear-btn" onclick="clearCart">清空</text>
+        </div>
         <scroller>
           <div repeat="{{ cart.items }}" class="cart-item">
-            <text>{{ spec.name }}</text>
-            <text>{{ count }}</text>
+            <text class="cart-item-name">{{ spec.name }}</text>
+            <text class="cart-item-count">{{ count }}</text>
           </div>
         </scroller>
       </div>
@@ -165,9 +169,53 @@
     background-color: #fff;
   }
 
-  .cart-item {
-    height: 40;
+  .cart-header {
+    height: 80;
+    background-color: #eceff1;
     flex-direction: row;
+  }
+
+  .cart-title {
+    flex: 1;
+    margin-left: 20;
+    margin-top: 20;
+    margin-bottom: 20;
+    padding-left: 20;
+    font-size: 32;
+    color: #666;
+    border-left-width: 6px;
+    border-left-style: solid;
+    border-left-color: #3190e8;
+  }
+
+  .cart-clear-btn {
+    margin-top: 20;
+    margin-right: 20;
+    font-size: 32;
+    color: #666;
+  }
+
+  .cart-item {
+    height: 80;
+    flex-direction: row;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: #eee;
+  }
+
+  .cart-item-name {
+    color: #333;
+    padding-left: 20;
+    margin-top: 20;
+    margin-bottom: 20;
+    height: 40;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .cart-item-count {
+    color: #333;
+    padding: 20;
   }
 </style>
 
@@ -212,7 +260,7 @@
         return this.cart.items;
       },
       cartHeight() {
-        const result = this.cart.items.length * 40;
+        const result = 80 + this.cart.items.length * 80;
         return Math.min(600, result);
       }
     },
@@ -225,7 +273,13 @@
         this.activeSliderTab = index;
         doAnimate(index, this.$el('slider-tab-indicator'));
       },
-      toggleCart() {
+      clearCart() {
+        this.toggleCart();
+        setTimeout(() => {
+          this.cart.clear();
+        }, 200);
+      },
+      toggleCart(callback) {
         const visible = !this.showCart;
         if (this.carts.length === 0) return;
         if (visible) {

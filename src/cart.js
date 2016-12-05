@@ -19,7 +19,6 @@ export default {
     this.total = total.toFixed(1);
   },
   add(id) {
-    console.log(id);
     const spec = this.specsMap[id];
     let item = this.find(id);
     if (item) {
@@ -60,6 +59,11 @@ export default {
     this.update();
   },
   clear() {
+    this.items.forEach((item) => {
+      const spec = this.specsMap[item.id];
+      const food = this.foodsMap[spec.parent];
+      if (spec) food.count = spec.count = item.count = 0;
+    });
     this.items.splice(0, this.items.length);
     this.update();
   }

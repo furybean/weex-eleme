@@ -25,8 +25,10 @@
             <div style="flex-direction: row; margin-top: 16;">
               <text class="food-price" style="flex: 1;">￥{{ price }}</text>
               <div style="flex-direction: row;">
-                <text class="food-cart-plus" if="{{ count > 0}}" onclick="decrease(spec_id)">-</text>
-                <text class="food-cart-count" if="{{ count > 0}}">{{ count }}</text>
+                <div style="flex-direction: row;" if="{{ count > 0 }}">
+                  <text class="food-cart-plus" onclick="decrease(spec_id)">-</text>
+                  <text class="food-cart-count">{{ count }}</text>
+                </div>
                 <text class="food-cart-plus" onclick="increase(spec_id)">+</text>
               </div>
             </div>
