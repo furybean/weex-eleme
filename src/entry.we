@@ -5,7 +5,10 @@
       <image src="{{ Images.shop }}" style="width: 24; height: 24;"></image>
       <text class="list-header-text">附近商家</text>
     </div>
-    <shop-list></shop-list>
+    <shop-list rsts="{{rsts}}"></shop-list>
+    <loading class="loading-view" display="{{loading_display}}" onloading="loadData">
+      <loading-indicator class="indicator" ></loading-indicator>
+    </loading>
   </scroller>
 </template>
 
@@ -32,20 +35,48 @@
     justify-content: center;
     align-items: center;
   }
+
+  .indicator {
+    height: 60;
+    width: 60;
+    color: #889967;
+  }
 </style>
 
 <script>
   require('./components/entry-slider.we');
   require('./components/shop-list.we');
   import Images from './image';
+  const stream = require('@weex-module/stream');
+  const RST_URL = 'https://mainsite-restapi.ele.me/shopping/restaurants?latitude=31.237371&longitude=121.388824&extras[]=activities&limit=20';
 
   module.exports = {
     data: {
-      Images
+      Images,
+      rsts: [],
+      offset: 0,
+      loading_display: 'show'
     },
     methods: {
+      loadData() {
+        const offset = this.offset + 20;
+        stream.fetch({
+          url: RST_URL + `&offset=${offset}`,
+          type: 'json'
+        }, (ret) => {
+          if (!ret.ok) {
+            console.log('request failed');
+          } else {
+            this.rsts.push.apply(this.rsts, ret.data);
+            this.offset = offset;
+          }
+        }, function(response) {
+          // console.log('get in progress:' + response.length);
+        });
+      }
     },
-    ready() {
+    created() {
+      this.loadData();
     }
   };
 </script>

@@ -89,9 +89,7 @@
 <script>
   require('./hash-image.we');
   require('./star.we');
-  const stream = require('@weex-module/stream');
   const storage = require('@weex-module/storage');
-  const RST_URL = 'https://mainsite-restapi.ele.me/shopping/restaurants?latitude=31.237371&longitude=121.388824&extras[]=activities&offset=0&limit=20';
   import { getPageLink } from '../util';
 
   module.exports = {
@@ -106,24 +104,6 @@
     },
     created() {
       this.pageLink = getPageLink('shop', this.$getConfig());
-      stream.fetch({
-        url: RST_URL,
-        type: 'json'
-      }, (ret) => {
-        if (!ret.ok) {
-          console.log('request failed');
-        } else {
-          const rsts = ret.data;
-          rsts.forEach((rst) => {
-
-          });
-          this.rsts = rsts;
-        }
-      }, function(response) {
-        // console.log('get in progress:' + response.length);
-      });
-    },
-    ready() {
     }
   };
 </script>
