@@ -1,0 +1,15 @@
+<template>
+  <div>
+    <text>Profile</text>
+  </div>
+</template>
+
+<style>
+</style>
+
+<script>
+  module.exports = {
+    data: {
+    }
+  };
+</script>

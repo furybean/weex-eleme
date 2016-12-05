@@ -1,51 +1,76 @@
 <template>
-  <scroller style="background-color: #f4f4f4;">
-    <entry-slider></entry-slider>
-    <div class="list-header">
-      <image src="{{ Images.shop }}" style="width: 24; height: 24;"></image>
-      <text class="list-header-text">附近商家</text>
-    </div>
-    <shop-list></shop-list>
-  </scroller>
+  <div style="flex-direction: column;">
+    <wxc-tabbar tab-items = {{tabItems}}></wxc-tabbar>
+  </div>
 </template>
 
-<style>
-  .list-header {
-    flex-direction: row;
-    padding: 20;
-    margin-top: 32;
-    background-color: #fff;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-color: #eee;
-  }
-
-  .list-header-text {
-    color: #666;
-    font-size: 24;
-    margin-left: 8;
-  }
-
-  .loading-view {
-    height: 80px;
-    width: 750px;
-    justify-content: center;
-    align-items: center;
-  }
-</style>
-
 <script>
-  require('./components/entry-slider.we');
-  require('./components/shop-list.we');
-  import Images from './image';
-
+  require('weex-components');
   module.exports = {
     data: {
-      Images
+      tabItems: [{
+        index: 0,
+        title: '外卖',
+        titleColor: '#000000',
+        icon: '',
+        image: 'http://gtms01.alicdn.com/tps/i1/TB1qw.hMpXXXXagXXXX9t7RGVXX-46-46.png',
+        selectedImage: 'http://gtms04.alicdn.com/tps/i4/TB16jjPMpXXXXazXVXX9t7RGVXX-46-46.png',
+        src: 'entry.js',
+        visibility: 'visible'
+      }, {
+        index: 1,
+        title: '订单',
+        titleColor: '#000000',
+        icon: '',
+        image: 'http://gtms03.alicdn.com/tps/i3/TB1LEn9MpXXXXaUXpXX9t7RGVXX-46-46.png',
+        selectedImage: 'http://gtms02.alicdn.com/tps/i2/TB1qysbMpXXXXcnXXXX9t7RGVXX-46-46.png',
+        src: 'order.js',
+        visibility: 'hidden'
+      }, {
+        index: 2,
+        title: '我的',
+        titleColor: '#000000',
+        icon: '',
+        image: 'http://gtms01.alicdn.com/tps/i1/TB1B0v5MpXXXXcvXpXX9t7RGVXX-46-46.png',
+        selectedImage: 'http://gtms04.alicdn.com/tps/i4/TB1NxY5MpXXXXcrXpXX9t7RGVXX-46-46.png',
+        src: 'profile.js',
+        visibility: 'hidden'
+      }]
     },
-    methods: {
+    created: function() {
+      const bundleUrl = this.$getConfig().bundleUrl;
+      let nativeBase;
+      const isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+      const isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+      if (isAndroidAssets) {
+        nativeBase = 'file://assets/';
+      } else if (isiOSAssets) {
+        nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+      } else {
+        let host = 'localhost:12580';
+        const matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+        if (matches && matches.length >= 2) {
+          host = matches[1];
+        }
+        nativeBase = 'http://' + host + '/dist/';
+      }
+      const h5Base = '/dist/';
+      // in Native
+      let base = nativeBase;
+      if (typeof window === 'object') { // in Browser or WebView
+        base = h5Base;
+      }
+
+      for (let i = 0; i < this.tabItems.length; i++) {
+        const tabItem = this.tabItems[i];
+        tabItem.src = base + tabItem.src;
+      }
     },
-    ready() {
+    ready(e) {
+      this.$on('tabBar.onClick', (e) => {
+        var detail = e.detail;
+        console.log('tabBar.onClick ' + detail.index);
+      });
     }
   };
 </script>
