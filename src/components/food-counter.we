@@ -1,6 +1,6 @@
 <template>
   <div style="flex-direction: row;">
-    <div style="flex-direction: row;" if="{{ count > 0 }}">
+    <div style="flex-direction: row;" id="minus-wrapper" class="minus-wrapper {{ showLeft ? 'minus-wrapper-visible' : '' }}">
       <text class="food-counter-icon" onclick="decrease()">-</text>
       <text class="food-counter-count">{{ count }}</text>
     </div>
@@ -11,48 +11,80 @@
 <style>
   .food-counter-icon {
     background-color: #3190e8;
-    border-radius: 15;
-    width: 30;
-    height: 30;
-    line-height: 30;
+    border-radius: 22;
+    width: 44;
+    height: 44;
+    line-height: 42;
     color: #fff;
     text-align: center;
-    font-size: 30;
+    font-size: 40;
   }
 
   .food-counter-count {
     margin-left: 16;
     margin-right: 16;
-    font-size: 24;
+    font-size: 32;
     width: 40;
     text-align: center;
-    line-height: 30;
+    line-height: 40;
+  }
+
+  .minus-wrapper {
+    position: relative;
+    left: 200px;
+  }
+
+  .minus-wrapper-visible {
+    transform: translateX(-200px);
   }
 </style>
 
 <script>
+  const animation = require('@weex-module/animation');
+
   module.exports = {
     data: {
       spec: null,
-      cart: null
+      cart: null,
+      showLeft: false
     },
     computed: {
       count() {
-        if (!this.cart) return 0;
-        const item = this.cart.find(this.spec);
-        if (item) {
-          return item.count;
+        let result = 0;
+        if (this.cart) {
+          const item = this.cart.find(this.spec);
+          if (item) {
+            result = item.count;
+          }
         }
-        return 0;
+        this.showLeft = result > 0;
+        return result;
       }
     },
     methods: {
+      toggleLeft(visible) {
+        animation.transition(this.$el('minus-wrapper'), {
+          styles: {
+            transform: visible ? 'translateX(-200px)' : 'translateX(0)'
+          },
+          duration: 200,
+          timingFunction: 'ease',
+          delay: 0
+        }, () => {
+        });
+      },
       increase() {
         this.cart.add(this.spec);
+        if (this.count === 1) {
+          this.toggleLeft(true);
+        }
         this.$dispatch('foodCounter.change', {});
       },
       decrease() {
         this.cart.decrease(this.spec);
+        if (this.count === 0) {
+          this.toggleLeft(false);
+        }
         this.$dispatch('foodCounter.change', {});
       }
     }

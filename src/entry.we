@@ -6,8 +6,8 @@
       <text class="list-header-text">附近商家</text>
     </div>
     <shop-list rsts="{{rsts}}"></shop-list>
-    <loading class="loading-view" display="{{loading_display}}" onloading="loadData">
-      <loading-indicator class="indicator" ></loading-indicator>
+    <loading class="loading-view" display="{{loadingDisplay}}" onloading="loadData">
+      <loading-indicator class="loading-indicator" ></loading-indicator>
     </loading>
   </scroller>
 </template>
@@ -30,13 +30,13 @@
   }
 
   .loading-view {
+    width: 750;
     height: 80px;
-    width: 750px;
     justify-content: center;
     align-items: center;
   }
 
-  .indicator {
+  .loading-indicator {
     height: 60;
     width: 60;
     color: #889967;
@@ -55,7 +55,7 @@
       Images,
       rsts: [],
       offset: 0,
-      loading_display: 'show'
+      loadingDisplay: 'show'
     },
     methods: {
       loadData() {
@@ -70,7 +70,7 @@
             this.rsts.push.apply(this.rsts, ret.data);
             this.offset = offset;
           }
-        }, function(response) {
+        }, (response) => {
           // console.log('get in progress:' + response.length);
         });
       }
