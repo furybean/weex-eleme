@@ -31,8 +31,6 @@
 </style>
 
 <script>
-  import { getImageURL } from '../util';
-
   module.exports = {
     data: {
       spec: null,
