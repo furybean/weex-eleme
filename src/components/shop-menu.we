@@ -24,13 +24,7 @@
             </div>
             <div style="flex-direction: row; margin-top: 16;">
               <text class="food-price" style="flex: 1;">￥{{ price }}</text>
-              <div style="flex-direction: row;">
-                <div style="flex-direction: row;" if="{{ count > 0 }}">
-                  <text class="food-cart-plus" onclick="decrease(spec_id)">-</text>
-                  <text class="food-cart-count">{{ count }}</text>
-                </div>
-                <text class="food-cart-plus" onclick="increase(spec_id)">+</text>
-              </div>
+              <food-counter cart="{{cart}}" spec="{{spec_id}}"></food-counter>
             </div>
           </div>
         </div>
@@ -121,26 +115,6 @@
     color: #f60;
     font-size: 30;
   }
-
-  .food-cart-plus {
-    background-color: #3190e8;
-    border-radius: 15;
-    width: 30;
-    height: 30;
-    line-height: 30;
-    color: #fff;
-    text-align: center;
-    font-size: 30;
-  }
-
-  .food-cart-count {
-    margin-left: 16;
-    margin-right: 16;
-    font-size: 24;
-    width: 40;
-    text-align: center;
-    line-height: 30;
-  }
 </style>
 
 <script>
@@ -148,10 +122,12 @@
   import Cart from '../cart';
   const dom = require('@weex-module/dom');
   require('./hash-image.we');
+  require('./food-counter.we');
 
   module.exports = {
     data: {
       menus: [],
+      cart: Cart,
       activeCategory: null
     },
     created() {
@@ -169,11 +145,6 @@
           dom.scrollToElement(header, { offset: 0 });
         }
         this.activeCategory = id;
-      }
-    },
-    computed: {
-      url() {
-        return this.hash ? getImageURL(this.hash) : '';
       }
     }
   };

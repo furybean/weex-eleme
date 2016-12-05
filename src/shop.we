@@ -24,7 +24,7 @@
     <div class="cart {{ showCart ? '' : 'is-hidden' }}">
       <div class="cart-mask" onclick="toggleCart">
       </div>
-      <div id="cart-content" class="cart-content" style="height: {{ cartHeight + 'px' }}; bottom: {{ -1 * cartHeight + 'px' }}">
+      <div id="cart-content" class="cart-content" style="height: {{ cartHeight + 'px' }}; bottom: {{ -1 * cartHeight + 'px' }};">
         <div class="cart-header">
           <text class="cart-title">购物车</text>
           <text class="cart-clear-btn" onclick="clearCart">清空</text>
@@ -32,7 +32,7 @@
         <scroller>
           <div repeat="{{ cart.items }}" class="cart-item">
             <text class="cart-item-name">{{ spec.name }}</text>
-            <text class="cart-item-count">{{ count }}</text>
+            <food-counter class="cart-item-count" cart="{{cart}}" spec="{{id}}"></food-count>
           </div>
         </scroller>
       </div>
@@ -165,6 +165,8 @@
 
   .cart-content {
     position: absolute;
+    left: 0;
+    bottom: 80;
     width: 750;
     background-color: #fff;
   }
@@ -220,7 +222,6 @@
 </style>
 
 <script>
-  require('weex-components');
   require('./components/nav-bar.we');
   require('./components/hash-image.we');
   require('./components/shop-menu.we');
@@ -279,9 +280,24 @@
           this.cart.clear();
         }, 200);
       },
+      handleFoodCounterChange() {
+        if (!this.showCart) return;
+        animation.transition(this.$el('cart-content'), {
+          styles: {
+            transform: `translateY(${-1 * this.cartHeight}px)`
+          },
+          duration: 0,
+          timingFunction: 'ease',
+          delay: 0
+        }, () => {
+        });
+        if (this.carts.length === 0) {
+          this.toggleCart();
+        }
+      },
       toggleCart(callback) {
         const visible = !this.showCart;
-        if (this.carts.length === 0) return;
+        if (visible && this.carts.length === 0) return;
         if (visible) {
           this.showCart = visible;
         }
@@ -301,6 +317,7 @@
     },
     created() {
       this.inBrowser = typeof window !== 'undefined';
+      this.$on('foodCounter.change', this.handleFoodCounterChange);
       const rstUrl = 'https://mainsite-restapi.ele.me/shopping/restaurant/461360?extras[]=activities&extras[]=album&extras[]=license&extras[]=identification&extras[]=statistics&latitude=31.237371&longitude=121.388824';
 
       stream.fetch({

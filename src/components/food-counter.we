@@ -1,0 +1,62 @@
+<template>
+  <div style="flex-direction: row;">
+    <div style="flex-direction: row;" if="{{ count > 0 }}">
+      <text class="food-counter-icon" onclick="decrease()">-</text>
+      <text class="food-counter-count">{{ count }}</text>
+    </div>
+    <text class="food-counter-icon" onclick="increase()">+</text>
+  </div>
+</template>
+
+<style>
+  .food-counter-icon {
+    background-color: #3190e8;
+    border-radius: 15;
+    width: 30;
+    height: 30;
+    line-height: 30;
+    color: #fff;
+    text-align: center;
+    font-size: 30;
+  }
+
+  .food-counter-count {
+    margin-left: 16;
+    margin-right: 16;
+    font-size: 24;
+    width: 40;
+    text-align: center;
+    line-height: 30;
+  }
+</style>
+
+<script>
+  import { getImageURL } from '../util';
+
+  module.exports = {
+    data: {
+      spec: null,
+      cart: null
+    },
+    computed: {
+      count() {
+        if (!this.cart) return 0;
+        const item = this.cart.find(this.spec);
+        if (item) {
+          return item.count;
+        }
+        return 0;
+      }
+    },
+    methods: {
+      increase() {
+        this.cart.add(this.spec);
+        this.$dispatch('foodCounter.change', {});
+      },
+      decrease() {
+        this.cart.decrease(this.spec);
+        this.$dispatch('foodCounter.change', {});
+      }
+    }
+  };
+</script>
