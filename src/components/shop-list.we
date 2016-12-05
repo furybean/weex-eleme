@@ -1,5 +1,5 @@
 <template>
-  <a repeat="{{rsts}}" href="{{pageLink}}">
+  <a repeat="{{rsts}}" onclick="handleClick(id)" href="{{pageLink}}">
     <div class="rst">
       <hash-image class="rst-image" hash="{{image_path}}"></hash-image>
       <div class="rst-content">
@@ -90,6 +90,7 @@
   require('./hash-image.we');
   require('./star.we');
   const stream = require('@weex-module/stream');
+  const storage = require('@weex-module/storage');
   const RST_URL = 'https://mainsite-restapi.ele.me/shopping/restaurants?latitude=31.237371&longitude=121.388824&extras[]=activities&offset=0&limit=20';
   import { getPageLink } from '../util';
 
@@ -97,6 +98,11 @@
     data: {
       rsts: [],
       pageLink: null
+    },
+    methods: {
+      handleClick(id) {
+        storage.setItem('CLICKED_RST_ID', id, () => {});
+      }
     },
     created() {
       this.pageLink = getPageLink('shop', this.$getConfig());

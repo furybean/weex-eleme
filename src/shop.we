@@ -228,6 +228,7 @@
   require('./components/shop-info.we');
   const stream = require('@weex-module/stream');
   const animation = require('@weex-module/animation');
+  const storage = require('@weex-module/storage');
 
   const doAnimate = function(index, indicator) {
     const left = index === 0 ? 0 : 365;
@@ -266,6 +267,64 @@
       }
     },
     methods: {
+      loadData(id) {
+        const rstUrl = `https://mainsite-restapi.ele.me/shopping/restaurant/${id}?extras[]=activities&extras[]=album&extras[]=license&extras[]=identification&extras[]=statistics&latitude=31.237371&longitude=121.388824`;
+
+        stream.fetch({
+          method: 'GET',
+          url: rstUrl,
+          type: 'json'
+        }, (ret) => {
+          if (!ret.ok) {
+            console.log('request failed');
+          } else {
+            this.rst = ret.data;
+          }
+        }, function(response) {
+          console.log('get in progress:' + response.length);
+        });
+
+        const url = `https://mainsite-restapi.ele.me/shopping/v1/menu?restaurant_id=${id}`;
+
+        stream.fetch({
+          method: 'GET',
+          url: url,
+          type: 'json'
+        }, (ret) => {
+          if (!ret.ok) {
+            console.log('request failed');
+          } else {
+            const menus = ret.data;
+            let specs = [];
+            const specsMap = {};
+            const foodsMap = {};
+            menus.forEach((category, menuIndex) => {
+              category.foods.forEach((food, foodIndex) => {
+                food.count = 0;
+                const foodId = food.$id = 'food-' + menuIndex + '-' + foodIndex;
+                const specfoods = food.specfoods;
+                if (specfoods.length === 1) {
+                  food.spec_id = specfoods[0].food_id;
+                  food.price = specfoods[0].price;
+                }
+                specfoods.forEach((spec) => {
+                  specsMap[spec.food_id] = spec;
+                  spec.count = 0;
+                  spec.parent = foodId;
+                });
+                specs = specs.concat(specfoods);
+                foodsMap[foodId] = food;
+              });
+            });
+            Cart.specsMap = this.specsMap = specsMap;
+            Cart.foodsMap = this.foodsMap = foodsMap;
+            this.specs = specs;
+            this.menus = menus;
+          }
+        }, function(response) {
+          console.log('get in progress:' + response.length);
+        });
+      },
       handleSliderChange(event) {
         this.activeSliderTab = event.index;
         doAnimate(this.activeSliderTab, this.$el('slider-tab-indicator'));
@@ -316,64 +375,12 @@
       }
     },
     created() {
+      storage.getItem('CLICKED_RST_ID', (event) => {
+        const id = event.data;
+        this.loadData(id);
+      });
       this.inBrowser = typeof window !== 'undefined';
       this.$on('foodCounter.change', this.handleFoodCounterChange);
-      const rstUrl = 'https://mainsite-restapi.ele.me/shopping/restaurant/461360?extras[]=activities&extras[]=album&extras[]=license&extras[]=identification&extras[]=statistics&latitude=31.237371&longitude=121.388824';
-
-      stream.fetch({
-        method: 'GET',
-        url: rstUrl,
-        type: 'json'
-      }, (ret) => {
-        if (!ret.ok) {
-          console.log('request failed');
-        } else {
-          this.rst = ret.data;
-        }
-      }, function(response) {
-        console.log('get in progress:' + response.length);
-      });
-
-      const url = 'https://mainsite-restapi.ele.me/shopping/v1/menu?restaurant_id=461360';
-
-      stream.fetch({
-        method: 'GET',
-        url: url,
-        type: 'json'
-      }, (ret) => {
-        if (!ret.ok) {
-          console.log('request failed');
-        } else {
-          const menus = ret.data;
-          let specs = [];
-          const specsMap = {};
-          const foodsMap = {};
-          menus.forEach((category, menuIndex) => {
-            category.foods.forEach((food, foodIndex) => {
-              food.count = 0;
-              const foodId = food.$id = 'food-' + menuIndex + '-' + foodIndex;
-              const specfoods = food.specfoods;
-              if (specfoods.length === 1) {
-                food.spec_id = specfoods[0].food_id;
-                food.price = specfoods[0].price;
-              }
-              specfoods.forEach((spec) => {
-                specsMap[spec.food_id] = spec;
-                spec.count = 0;
-                spec.parent = foodId;
-              });
-              specs = specs.concat(specfoods);
-              foodsMap[foodId] = food;
-            });
-          });
-          Cart.specsMap = this.specsMap = specsMap;
-          Cart.foodsMap = this.foodsMap = foodsMap;
-          this.specs = specs;
-          this.menus = menus;
-        }
-      }, function(response) {
-        console.log('get in progress:' + response.length);
-      });
     }
   };
 </script>
