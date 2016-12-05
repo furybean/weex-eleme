@@ -1,25 +1,78 @@
 <template>
-  <div style="width: 750;">
+  <div class="shop-info" style="width: 750;">
     <scroller>
       <div>
-        <div repeat="{{rst.activities || []}}">
-          <div style="flex-direction: row;">
-            <text style="color: #fff; border-radius: 4; background-color: {{'#' + icon_color}}">{{icon_name}}</text>
-            <text style="flex: 1;">{{description}}</text>
+        <text class="shop-header">活动与属性</text>
+        <div class="shop-content" style="padding: 10px;">
+          <div class="activity" repeat="{{rst.activities || []}}">
+            <text class="activity-icon" style="background-color: {{'#' + icon_color}}">{{icon_name}}</text>
+            <text class="activity-desc">{{description}}</text>
           </div>
         </div>
       </div>
-      <div>
-        <text>商家信息</text>
-        <text>{{rst.description}}</text>
-        <text>地址：{{rst.address}}</text>
-        <text>营业时间：{{ rst.opening_hours && rst.opening_hours[0] }}</text>
+      <div style="margin-top: 30;">
+        <text class="shop-header">商家信息</text>
+        <div class="shop-content">
+          <text class="shop-list-item">{{rst.description}}</text>
+          <text class="shop-list-item">地址：{{rst.address}}</text>
+          <text class="shop-list-item">营业时间：{{ rst.opening_hours && rst.opening_hours[0] }}</text>
+        </div>
       </div>
     </scroller>
   </div>
 </template>
 
 <style>
+  .shop-info {
+    background-color: #eee;
+  }
+
+  .shop-header {
+    padding: 20;
+    height: 80;
+    color: #333;
+    font-weight: bold;
+    font-size: 32;
+    background-color: #fff;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #eee;
+  }
+
+  .shop-content {
+    background-color: #fff;
+  }
+
+  .activity {
+    padding: 10;
+    flex-direction: row;
+  }
+
+  .activity-icon {
+    padding-top: 4;
+    width: 36px;
+    height: 36px;
+    font-size: 28;
+    text-align: center;
+    color: #fff;
+    border-radius: 4;
+  }
+
+  .activity-desc {
+    flex: 1;
+    font-size: 30;
+    margin-left: 12px;
+    color: #666;
+  }
+
+  .shop-list-item {
+    color: #666;
+    margin-left: 10;
+    padding: 20px;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #ddd;
+  }
 </style>
 
 <script>
