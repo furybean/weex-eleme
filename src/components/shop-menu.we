@@ -50,7 +50,7 @@
   }
 
   .category-tab {
-    padding-left: 16px;
+    padding-left: 24px;
     padding-right: 16px;
     padding-top: 24px;
     padding-bottom: 24px;
@@ -67,6 +67,7 @@
   }
 
   .category-tab-active {
+    padding-left: 18px;
     border-left-width: 6px;
     border-left-style: solid;
     border-left-color: #4b8fe1;
@@ -79,8 +80,12 @@
   }
 
   .food {
+    margin-left: 10;
+    margin-top: 10;
     padding: 10px;
-    border-bottom: 1px solid #ddd;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #ddd;
   }
 
   .food-desc {
