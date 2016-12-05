@@ -1,15 +1,171 @@
 <template>
-  <div>
-    <text>Profile</text>
+  <div style="flex-direction: column; background-color: #f4f4f4;">
+    <nav-bar title="我的"></nav-bar>
+    <scroller class="flex: 1;">
+      <div class="profile-header">
+        <image class="profile-avator" src="{{ Images.profile }}"></image>
+        <div style="flex: 1;">
+          <text class="profile-login-tip">登录 / 注册</text>
+          <div style="flex-direction: row; ">
+            <image src="{{ Images.mobile }}" style="width: 16;height: 24;"></image>
+            <text class="profile-user-phone">登录后享受更多特权</text>
+          </div>
+        </div>
+      </div>
+      <div class="entries">
+        <div class="entry entry-has-border">
+          <image src="{{ Images.balance }}" class="entry-icon"></image>
+          <text class="entry-text">我的余额</text>
+        </div>
+        <div class="entry entry-has-border">
+          <image src="{{ Images.redbag }}" class="entry-icon"></image>
+          <text class="entry-text">我的优惠</text>
+        </div>
+        <div class="entry">
+          <image src="{{ Images.coins }}" class="entry-icon"></image>
+          <text class="entry-text">我的积分</text>
+        </div>
+      </div>
+      <div class="list">
+        <div class="list-item">
+          <image class="list-item-icon" src="{{ Images.order }}"></image>
+          <text class="list-item-text">我的订单</text>
+        </div>
+        <div class="list-item">
+          <image class="list-item-icon" src="{{ Images.luckybag }}"></image>
+          <text class="list-item-text">积分商城</text>
+        </div>
+        <div class="list-item">
+          <image class="list-item-icon" src="{{ Images.vip }}"></image>
+          <text class="list-item-text list-item-noborder"> 饿了么会员卡</text>
+        </div>
+      </div>
+
+      <div class="list">
+        <div class="list-item">
+          <image class="list-item-icon" src="{{ Images.service }}"></image>
+          <text class="list-item-text">服务中心</text>
+        </div>
+        <div class="list-item">
+          <image class="list-item-icon" src="{{ Images.eleme }}"></image>
+          <text class="list-item-text list-item-noborder">下载饿了么 APP</text>
+        </div>
+      </div>
+    </scroller>
   </div>
 </template>
 
 <style>
+  .profile-header {
+    background-color: #3190e8;
+    height: 200;
+    padding-top: 36;
+    padding-left: 32;
+    padding-right: 32;
+    flex-direction: row;
+  }
+
+  .profile-avator {
+    width: 128;
+    height: 128;
+    background-color: #fff;
+    border-radius: 64;
+    margin-right: 32;
+  }
+
+  .profile-login-tip {
+    font-size: 48;
+    height: 68px;
+    margin-top: 12;
+    margin-bottom: 8;
+    color: #fff;
+  }
+
+  .profile-user-phone {
+    margin-left: 12;
+    font-size: 26;
+    color: #fff;
+  }
+
+  .entries {
+    flex-direction: row;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #ddd;
+  }
+
+  .entry-has-border {
+    border-right-style: solid;
+    border-right-width: 2px;
+    border-right-color: #ddd;
+  }
+
+  .entry {
+    flex: 1;
+    padding-top: 30;
+    padding-bottom: 30;
+    background-color: #fff;
+  }
+
+  .entry-icon {
+    width: 64;
+    height: 64;
+    margin-left: 92;
+    text-align: center;
+  }
+
+  .entry-text {
+    margin-top: 24;
+    font-size: 28;
+    text-align: center;
+    color: #666;
+  }
+
+  .list {
+    margin-top: 20px;
+    border-top-style: solid;
+    border-top-width: 2px;
+    border-top-color: #ddd;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #ddd;
+  }
+
+  .list-item {
+    padding-top: 28px;
+    background-color: #fff;
+    flex-direction: row;
+  }
+
+  .list-item-icon {
+    width: 32;
+    height: 32;
+    margin-left: 30;
+    margin-right: 12;
+  }
+
+  .list-item-text {
+    flex: 1;
+    margin-left: 10;
+    padding-bottom: 28px;
+    color: #333;
+    border-bottom-style: solid;
+    border-bottom-width: 2;
+    border-bottom-color: #ddd;
+  }
+
+  .list-item-noborder {
+    border-bottom-width: 0;
+  }
 </style>
 
 <script>
+  require('./components/nav-bar.we');
+  import Images from './image';
+
   module.exports = {
     data: {
+      Images
     }
   };
 </script>
