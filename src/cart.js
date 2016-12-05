@@ -16,9 +16,10 @@ export default {
       let { spec, count } = item;
       total += spec.price * count;
     });
-    this.total = total;
+    this.total = total.toFixed(1);
   },
   add(id) {
+    console.log(id);
     const spec = this.specsMap[id];
     let item = this.find(id);
     if (item) {
@@ -41,7 +42,8 @@ export default {
       item.count++;
     }
     const spec = this.specsMap[id];
-    if (spec) spec.count = item.count;
+    const food = this.foodsMap[spec.parent];
+    if (spec) food.count = spec.count = item.count;
     this.update();
   },
   decrease(id) {
@@ -53,7 +55,8 @@ export default {
       this.items.splice(this.items.indexOf(item), 1);
     }
     const spec = this.specsMap[id];
-    if (spec) spec.count = item.count;
+    const food = this.foodsMap[spec.parent];
+    if (spec) food.count = spec.count = item.count;
     this.update();
   },
   clear() {

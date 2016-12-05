@@ -22,7 +22,14 @@
               <text class="food-month_sales">月售{{ month_sales }}份</text>
               <text class="food-satisfy_rate">好评率{{ satisfy_rate }}%</text>
             </div>
-            <div onclick="addToCart(spec_id)"><text>{{ count }}</text></div>
+            <div style="flex-direction: row; margin-top: 16;">
+              <text class="food-price" style="flex: 1;">￥{{ price }}</text>
+              <div style="flex-direction: row;">
+                <text class="food-cart-plus" if="{{ count > 0}}" onclick="decrease(spec_id)">-</text>
+                <text class="food-cart-count" if="{{ count > 0}}">{{ count }}</text>
+                <text class="food-cart-plus" onclick="increase(spec_id)">+</text>
+              </div>
+            </div>
           </div>
         </div>
       </cell>
@@ -107,6 +114,31 @@
     font-size: 20;
     color: #666;
   }
+
+  .food-price {
+    color: #f60;
+    font-size: 30;
+  }
+
+  .food-cart-plus {
+    background-color: #3190e8;
+    border-radius: 15;
+    width: 30;
+    height: 30;
+    line-height: 30;
+    color: #fff;
+    text-align: center;
+    font-size: 30;
+  }
+
+  .food-cart-count {
+    margin-left: 16;
+    margin-right: 16;
+    font-size: 24;
+    width: 40;
+    text-align: center;
+    line-height: 30;
+  }
 </style>
 
 <script>
@@ -123,8 +155,11 @@
     created() {
     },
     methods: {
-      addToCart(spceId) {
-        Cart.add(spceId);
+      increase(specId) {
+        Cart.add(specId);
+      },
+      decrease(specId) {
+        Cart.decrease(specId);
       },
       handleCategoryClick(event, id) {
         const header = this.$el('shop-food-header-' + id);

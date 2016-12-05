@@ -34,7 +34,9 @@
       </div>
     </div>
     <div class="cart-wrapper" onclick="toggleCart">
-      <text>购物车{{cart.total}}</text>
+      <text class="cart-logo">购物车</text>
+      <text class="cart-total">￥{{cart.total}}</text>
+      <text class="cart-btn">去结算</text>
     </div>
   </div>
 </template>
@@ -114,8 +116,27 @@
 
   .cart-wrapper {
     position: relative;
-    background-color: #eee;
-    height: 80;
+    flex-direction: row;
+    background-color: #3d3d3f;
+    opacity: 0.95;
+    height: 90;
+  }
+
+  .cart-logo {
+    padding: 25;
+    color: #fff;
+  }
+
+  .cart-total {
+    color: #fff;
+    padding: 25;
+    flex: 1;
+  }
+
+  .cart-btn {
+    color: #fff;
+    background-color: #535356;
+    padding: 25;
   }
 
   .cart {
@@ -127,6 +148,7 @@
 
   .is-hidden {
     visibility: hidden;
+    display: none;
   }
 
   .cart-mask {
@@ -262,6 +284,7 @@
               const specfoods = food.specfoods;
               if (specfoods.length === 1) {
                 food.spec_id = specfoods[0].food_id;
+                food.price = specfoods[0].price;
               }
               specfoods.forEach((spec) => {
                 specsMap[spec.food_id] = spec;
