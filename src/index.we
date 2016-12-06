@@ -1,11 +1,13 @@
 <template>
   <div style="flex-direction: column;">
-    <wxc-tabbar tab-items = {{tabItems}}></wxc-tabbar>
+    <wxc-tabbar tab-items ="{{tabItems}}" selected-color="#3190e8"></wxc-tabbar>
   </div>
 </template>
 
 <script>
   require('weex-components');
+  import Images from './image';
+
   module.exports = {
     data: {
       tabItems: [{
@@ -13,8 +15,8 @@
         title: '外卖',
         titleColor: '#000000',
         icon: '',
-        image: 'http://gtms01.alicdn.com/tps/i1/TB1qw.hMpXXXXagXXXX9t7RGVXX-46-46.png',
-        selectedImage: 'http://gtms04.alicdn.com/tps/i4/TB16jjPMpXXXXazXVXX9t7RGVXX-46-46.png',
+        image: Images.tabShopping,
+        selectedImage: Images.tabShoppingSelected,
         src: 'entry.js',
         visibility: 'visible'
       }, {
@@ -22,8 +24,8 @@
         title: '订单',
         titleColor: '#000000',
         icon: '',
-        image: 'http://gtms03.alicdn.com/tps/i3/TB1LEn9MpXXXXaUXpXX9t7RGVXX-46-46.png',
-        selectedImage: 'http://gtms02.alicdn.com/tps/i2/TB1qysbMpXXXXcnXXXX9t7RGVXX-46-46.png',
+        image: Images.tabOrder,
+        selectedImage: Images.tabOrderSelected,
         src: 'order.js',
         visibility: 'hidden'
       }, {
@@ -31,8 +33,8 @@
         title: '我的',
         titleColor: '#000000',
         icon: '',
-        image: 'http://gtms01.alicdn.com/tps/i1/TB1B0v5MpXXXXcvXpXX9t7RGVXX-46-46.png',
-        selectedImage: 'http://gtms04.alicdn.com/tps/i4/TB1NxY5MpXXXXcrXpXX9t7RGVXX-46-46.png',
+        image: Images.tabUser,
+        selectedImage: Images.tabUserSelected,
         src: 'profile.js',
         visibility: 'hidden'
       }]
